@@ -2,38 +2,28 @@ const dbHelper = require("../controllers/dbHelper");
 const User = require("../models/user")
 const crypto = require('crypto');
 const AuthConst = require("../Const/AuthConst")
+const RegularExpressions = require('../Const/regularExpressions')
 dataBase = new dbHelper()
 
 module.exports = class userModel {
 
-
     register(user) {
         return new Promise((resolve, reject) => {
+
             if (user.username == undefined || user.email == undefined || user.password == undefined) {
                 return reject("Не все обязательные поля заполнены")
             }
             else {
-                let regularEmail = /^[a-zA-Z0-9\._-]+@[a-zA-Z0-9-]+\.[a-z]{2,8}$/
-                if (!regularEmail.test(user.email)) {
+                if (!RegularExpressions.REGULAR_EMAIL.test(user.email)) {
                     return reject("Почта введена не верно")
                 }
 
-                let regularPhoneNumber = /^([\+]?)(([380]{3}?)([0-9]{2})|([38]{2}?)([\(]?)([0-9]{3})([\)]))([-]?)([0-9]{3})([-]?)([0-9]{2})([-]?)([0-9]{2})$/
-                if (!regularPhoneNumber.test(user.phoneNumber)) {
+                if (!RegularExpressions.REGULAR_PHONE_NUMBER.test(user.phoneNumber)) {
                     return reject("Номер введён не верно")
                 }
 
-
-
-
-
                 let arrUser = new Array();
                 let dbConnect = dataBase.getConnect()
-
-
-
-
-
 
                 /*Шифрование пароля с учётом того что пришёл не зашифрованный*/
                 let hash_pass
@@ -42,11 +32,6 @@ module.exports = class userModel {
                     if (err) return reject(err);
                     hash_pass = derivedKey.toString(AuthConst.BYTE_TO_STRING_ENCODING)
                     user.password = hash_pass + ":" + salt
-
-
-
-
-
 
 
 
@@ -65,13 +50,27 @@ module.exports = class userModel {
 
                     })
                 });
-
             }
         });
     }
 
 
+    login(login, bool, password) {
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+    }
 
 
 

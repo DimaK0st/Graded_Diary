@@ -1,8 +1,8 @@
 
-const userModel = require("../models/userModel");
+const UserModel = require("../models/userModel");
 const User = require("../models/user")
 const AuthConst = require("../Const/AuthConst")
-userM = new userModel()
+userModel = new UserModel()
 
 module.exports = class userController {
 
@@ -24,7 +24,7 @@ module.exports = class userController {
 
         user.phoneNumber = req.body.phoneNumber === undefined ? null : req.body.phoneNumber
 
-        userM.register(user).then((bool) => {
+        userModel.register(user).then((bool) => {
             console.log("vishel s Promise")
             if (bool) {
                 res.status(200).send("Пользователь создан")}
@@ -32,6 +32,21 @@ module.exports = class userController {
             console.log(err);
             res.status(400).send(err)
         });
+    }
+
+    login(req, res) {
+        
+        userModel.login(req.body.login, RegularExpressions.REGULAR_EMAIL.test(req.body.login), password).then((bool) => {
+            console.log("vishel s Promise")
+            if (bool) {
+                res.status(200).send("Пользователь создан")}
+        }).catch((err) => {
+            console.log(err);
+            res.status(400).send(err)
+        });
+        
+
+    }
 
 
 
@@ -40,4 +55,8 @@ module.exports = class userController {
 
 
 
-    }}
+
+
+
+
+}
